@@ -1,0 +1,208 @@
+body{
+    overflow: auto;
+    background-color: #ececec;
+}
+a:link {
+    text-decoration: none;
+}
+.site-header {
+    width: 100%;
+    height: 75px;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    background: rgba(255,255,255,.95);
+    box-shadow: 0 1px 40px -8px rgba(0,0,0,.5);
+}
+.site-top {
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.site-top ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+}
+.site-top ul li {
+    float: left;
+    margin: 0 13px;
+    position: relative;
+}
+.site-top ul li a {
+    padding: 10px 0;
+    display: inline-block;
+    color: #666;
+}
+.site-top .lower-cantiner {
+    position: absolute;
+    left: 50%;
+    pointer-events: none;
+}
+.site-top .lower {
+    display: inline-block;
+    margin: 15px 0 0 10px;
+    font-size: 16px;
+    position: relative;
+    left: -50%;
+    pointer-events: auto !important;
+}
+.site-top .lower nav {
+    display: block !important;
+    position: relative;
+    float: right;
+    display: none;
+    animation: searchbox .2s;
+}
+.site-branding {
+    float: left;
+    position: relative;
+    height: 75px;
+    line-height: 75px;
+    margin-left: -6px;
+}
+.site-title {
+    margin: 0;
+}
+.logolink.nav .navbrand {
+    font-size: 25px;
+    border-radius: 9px;
+    padding-bottom: 2px;
+    padding-top: 5px;
+}
+.site-title img {
+    height:40px;
+    opacity:.75;
+    -webkit-transition:color .2s ease-out,border .2s ease-out,opacity .2s ease-out;
+    -moz-transition:color .2s ease-out,border .2s ease-out,opacity .2s ease-out;
+    transition:color .2s ease-out,border .2s ease-out,opacity .2s ease-out
+}
+.site-title a:hover img{
+    opacity:1
+}
+.site-top a:hover .navbrandtitle{
+    background-color:orange;
+    color:#fff;
+}
+.logolink .navbrandtitle{
+    background-color:rgba(255,255,255,.5);
+    font-size: 25px;
+    border-radius:5px;
+    color:#464646;
+    height:auto;
+    line-height:25px;
+    margin-right:0;
+    padding-bottom:0;
+    padding-top:1px;
+    text-size-adjust:100%;
+    width:auto
+}
+.datacard {
+    background-color: white;
+    border-radius: 2px;
+}
+.overview-gap {
+    clear: both;
+    background-color: #ececec;
+    height: 18px;
+}
+.overview-card-title-container {
+    padding: 14px 15px 0;
+}
+.overview-card-title {
+    font-size: 14px;
+    color: #323437;
+    font-weight: 700;
+}
+div.table-list {
+    padding-top: 10px;
+    padding-right: 1px;
+    border: 1px solid #dedede;
+    border-bottom: 0;
+}
+div.table-list table.list {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px;
+}
+.overview-detail div.left{
+    float: left;
+    width: 49%;
+}
+.overview-detail div.right{
+    float: right;
+    width: 49%;
+}
+.table-detail{
+    display: block;
+}
+div.btw, div.fold {
+    height: 30px;
+    border-left: 1px solid #dedede;
+    border-right: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+}
+div.table-list table.list tr td.normal {
+    padding-left: 20px;
+    width: 85px;
+    text-align: left;
+    color: #323437;
+}
+div.table-list table.list tr.title {
+    border-bottom: none;
+    height: 50px;
+    line-height: 50px;
+}
+div.table-list table.list tr td {
+    border-left: 1px solid #f0f0f0;
+    padding: 6px 20px 6px 5px;
+    height: 17px;
+    line-height: 17px;
+    white-space: nowrap;
+    text-align: center;
+}
+div.table-list table.list tr.highlight td {
+    color: #111314;
+    font-size: 16px;
+    font-weight: bolder;
+}
+div.table-grid div.table-grid-item {
+    margin-top: 1px;
+    background-color: #fff;
+    height: 392px;
+}
+.table-grid .table-grid-item {
+    border-radius: 2px;
+    margin-bottom: 18px;
+}
+.table-grid .table-grid-item .title {
+    padding: 20px 20px 10px;
+}
+.clearfix {
+    display: block;
+}
+div.table-grid div.table-grid-item div.title div.l {
+    color: #323437;
+    font-weight: 700;
+    font-size: 14px;
+}
+.l {
+    float: left;
+}
+.footer {
+    margin-top: 20px;
+    padding: 20px 0 24px;
+    text-align: center;
+}
+.overview-do button{
+    margin: 20px 10px 20px;
+}
+#chartTitle{
+    margin: 10px;
+    text-align: left;
+}

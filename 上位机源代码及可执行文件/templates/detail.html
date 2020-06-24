@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <script type="text/javascript" src="/static/js/jquery3.5.1.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome-animation@0.2.1/dist/font-awesome-animation.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script type="text/javascript" src="/static/js/echarts.min.js"></script>
+    <title>首页|智能大棚</title>
+</head>
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-top" id="pcmenu">
+          <div class="site-branding">
+            <span class="site-title">
+              <span class="logolink nav">
+                <a href="/">
+                  <span class="navbrand"><img src="/static/img/logo.png"/></span>
+                  <span class="navbrandtitle">智能大棚</span>
+                </a>
+              </span>
+            </span>
+          </div>
+          <div class="lower-cantiner">
+            <div class="lower">
+                <ul id="menu-new" class="menu">
+                    <li><a href="/"><span class="faa-parent animated-hover"><i class="fa  fa-home faa-shake" aria-hidden="true"></i>首页</span></a></li>
+                    <li><a href="/detail"><span class="faa-parent animated-hover"><i class="fa fa-bar-chart faa-shake" aria-hidden="true"></i>详细数据</span></a></li>
+                    <li><a href="/equip"><span class="faa-parent animated-hover"><i class="fa fa-cube faa-shake" aria-hidden="true"></i>设备记录</span></a></li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+    <div class="container">
+        <div class="content" style="margin-top: 100px;text-align: center;">
+            <div class="datacard">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="3h-tab" data-toggle="tab" aria-selected="true">过去三小时</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="1d-tab" data-toggle="tab" aria-selected="false">过去一天</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="2d-tab" data-toggle="tab" aria-selected="false">过去两天</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="datacard" id="3h" role="tabpanel" aria-labelledby="3h-tab">
+                        <div class="overview-gap"></div>
+                        <div id="chartTitle">当前显示：过去<strong>三小时</strong>历史数据</div>
+                        <div id="ThreeHour" style="width:100%;height:300px;"></div>
+                        <div id="ThreeHourP" style="width:100%;height:300px;"></div>
+                        <div id="ThreeHourT" style="padding:20px;"></div>
+                    </div>
+                    
+                    <div class="datacard" id="1d" role="tabpanel" aria-labelledby="1d-tab">
+                        <div class="overview-gap"></div>
+                        <div id="chartTitle">当前显示：过去<strong>一天</strong>历史数据</div>
+                        <div id="OneDay" style="width:100%;height:300px;"></div>
+                        <div id="OneDayP" style="width:100%;height:300px;"></div>
+                        <div id="OneDayT" style="padding:20px;"></div>
+                    </div>
+                    
+                    <div class="datacard" id="2d" role="tabpanel" aria-labelledby="2d-tab">
+                        <div class="overview-gap"></div>
+                        <div id="chartTitle">当前显示：过去<strong>两天</strong>历史数据</div>
+                        <div id="TwoDay" style="width:100%;height:300px;"></div>
+                        <div id="TwoDayP" style="width:100%;height:300px;"></div>
+                        <div id="TwoDayT" style="padding:20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function allcharts(){
+        var ThreeHour=echarts.init(document.getElementById("ThreeHour"));
+        var OneDay=echarts.init(document.getElementById("OneDay"));
+        var TwoDay=echarts.init(document.getElementById("TwoDay"));
+        var ThreeHourP=echarts.init(document.getElementById("ThreeHourP"));
+        var OneDayP=echarts.init(document.getElementById("OneDayP"));
+        var TwoDayP=echarts.init(document.getElementById("TwoDayP"));
+        drawthree(ThreeHour,3)
+        drawP(ThreeHourP,3)
+        drawthree(OneDay,24)
+        drawP(OneDayP,24)
+        drawthree(TwoDay,48)
+        drawP(TwoDayP,48)
+    }
+    function drawthree(chart,hour){
+        postdata={"Hour":hour}
+        $.post('/getjson/',postdata,function(data){
+            ans = $.parseJSON(data)
+                time=ans["time"]
+                temperature=ans["temperature"]
+                humidity=ans["humidity"]
+                light=ans["light"]
+                chart.setOption({
+                title: {
+                    text: '温度,湿度,光照折线图',
+                    top: 1,
+                    x: 'center'
+                },
+                tooltip: {
+                    show: true,
+                    trigger: 'axis'
+                },
+                toolbox: {
+		            show : true,
+		            orient: 'horizontal',
+		            left: 'center',
+		            top: '270',
+		            showTitle: true,
+		            feature : {
+		                magicType : {show: true, title:{line:'折线图',bar:'柱形图'}, type: ['line', 'bar']},
+		                restore : {show: true,title:'还原',color:'black'},
+		                saveAsImage : {show: true,title:'保存为图片',type:'jpeg',lang:['点击本地保存']}
+		            }
+		        },
+                xAxis: {
+                    data: time
+                },
+                yAxis: {
+                    type: 'value',
+                },
+                series: [{
+                    name: '温度',
+                    type: 'line',
+                    color: ['#2fc4b2'],
+                    data: temperature
+                },
+                {
+                    name: '湿度',
+                    type: 'line',
+                    color: ['#12947f'],
+                    data: humidity
+                },
+                {
+                    name: '光照',
+                    type: 'line',
+                    color: ['#e71414'],
+                    data: light
+                }
+                ]
+            });
+        })
+    }
+    function drawP(chart,hour){
+        postdata={"Hour":hour}
+        $.post('/getjson/',postdata,function(data){
+                ans = $.parseJSON(data)
+                time=ans["time"]
+                pressure=ans["pressure"]
+                if(hour==3){ choosetable="ThreeHourT"}
+                else if(hour==24){ choosetable="OneDayT"}
+                else if(hour==48){choosetable="TwoDayT"}
+                chart.setOption({
+                title: {
+                    text: '气压折线图',
+                    top: 1,
+                    x: 'center'
+                },
+                tooltip: {
+                    show: true,
+                    trigger: 'axis'
+                },
+                toolbox: {
+		            show : true,
+		            orient: 'horizontal',
+		            left: 'center',
+		            top: '270',
+		            showTitle: true,
+		            feature : {
+		                magicType : {show: true, title:{line:'折线图',bar:'柱形图'}, type: ['line', 'bar']},
+		                restore : {show: true,title:'还原',color:'black'},
+		                saveAsImage : {show: true,title:'保存为图片',type:'jpeg',lang:['点击本地保存']}
+		            }
+		        },
+                xAxis: {
+                    data: time
+                },
+                yAxis: {
+                    type: 'value',
+                },
+                series: [{
+                    name: '气压',
+                    type: 'line',
+                    color: ['#96bb7c'],
+                    data: pressure
+                }
+                ]
+            });
+            drawtable(choosetable,ans)
+        })
+    }
+    function drawtable(choosetable,ans){
+        $("#"+choosetable).html('<table class="table table-bordered">'+
+                    '<thead><tr><th scope="col">时间</th><th scope="col">温度</th><th scope="col">湿度</th><th scope="col">光照</th><th scope="col">气压</th></tr></thead>'+
+                    '<tbody id="'+choosetable+'tr"></tbody></table>')
+        time=ans["time"]
+        temperature=ans["temperature"]
+        humidity=ans["humidity"]
+        light=ans["light"]
+        pressure=ans['pressure']
+        var ll=0
+        for(ll in time){
+            ll++
+        }
+        table="#"+choosetable+"tr"
+        for(i=ll-1;i>=0;i--){
+            $(table).append('<tr><th scope="row">'+time[i]+'</th><td>'+temperature[i]+'</td><td>'+humidity[i]+'</td><td>'+light[i]+'</td><td>'+pressure[i]+'</tr>')
+        }
+    }
+    check_session=function(){
+        $.get('/check_session/').done(function(ans){
+            data=$.parseJSON(ans);
+            console.log(data)
+            if(data["session"]=="false"){
+                window.location.replace("/login/");
+            }
+        })
+    }
+    $('#3h-tab').click(function(){
+        $('#3h').css("display",function(){return "block"})
+        $('#1d').css("display",function(){return "none"})
+        $('#2d').css("display",function(){return "none"})
+    })
+    $('#1d-tab').click(function(){
+        $('#3h').css("display",function(){return "none"})
+        $('#1d').css("display",function(){return "block"})
+        $('#2d').css("display",function(){return "none"})
+    })
+    $('#2d-tab').click(function(){
+        $('#3h').css("display",function(){return "none"})
+        $('#1d').css("display",function(){return "none"})
+        $('#2d').css("display",function(){return "block"})
+    })
+    window.onload=function(){
+        check_session()
+        allcharts()
+    }
+</script>
+</html>

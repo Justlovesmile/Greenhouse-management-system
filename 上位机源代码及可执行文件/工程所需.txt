@@ -1,0 +1,15 @@
+Python 3.8
+Mysql 8.0.15
+
+//所需库
+Package           Version
+----------------- ----------
+Flask                  1.1.2
+PyMySQL           0.9.3
+pyserial              3.4
+
+//需要修改sqlapi.py内，第6~10行和第24~29行关于数据库信息的字典
+//运行
+python index.py
+//数据库导出到sql文件夹里了
+//初始登录账号root，密码123456

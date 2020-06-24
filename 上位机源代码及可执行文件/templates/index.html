@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <script type="text/javascript" src="/static/js/jquery3.5.1.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.bundle.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome-animation@0.2.1/dist/font-awesome-animation.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+    <script type="text/javascript" src="/static/js/echarts.min.js"></script>
+    <title>首页|智能大棚</title>
+</head>
+<body>
+    <header class="site-header" role="banner">
+        <div class="site-top" id="pcmenu">
+          <div class="site-branding">
+            <span class="site-title">
+              <span class="logolink nav">
+                <a href="/">
+                  <span class="navbrand"><img src="/static/img/logo.png"/></span>
+                  <span class="navbrandtitle">智能大棚</span>
+                </a>
+              </span>
+            </span>
+          </div>
+          <div class="lower-cantiner">
+            <div class="lower">
+                <ul id="menu-new" class="menu">
+                    <li><a href="/"><span class="faa-parent animated-hover"><i class="fa  fa-home faa-shake" aria-hidden="true"></i>首页</span></a></li>
+                    <li><a href="#row1"><span class="faa-parent animated-hover"><i class="fa fa-thermometer-1 faa-shake" aria-hidden="true"></i>温度</span></a></li>
+                    <li><a href="#row1"><span class="faa-parent animated-hover"><i class="fa fa-tint faa-shake" aria-hidden="true"></i>湿度</span></a></li>
+                    <li><a href="#row2"><span class="faa-parent animated-hover"><i class="fa fa-sun-o faa-shake" aria-hidden="true"></i>光照</span></a></li>
+                    <li><a href="#row2"><span class="faa-parent animated-hover"><i class="fa fa-bullseye faa-shake" aria-hidden="true"></i>气压</span></a></li>
+                    <li><a href="/detail"><span class="faa-parent animated-hover"><i class="fa fa-bar-chart faa-shake" aria-hidden="true"></i>详细数据</span></a></li>
+                    <li><a href="/equip"><span class="faa-parent animated-hover"><i class="fa fa-cube faa-shake" aria-hidden="true"></i>设备记录</span></a></li>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </header>
+    <div class="container">
+        <div class="jumbotron" style="margin-top: 100px;text-align: center;">
+            <h1>您好，尊敬的用户!</h1>
+            <p>欢迎使用智能大棚管理页面</p>
+            <p><button id="logoutBtn" class="btn btn-outline-danger">退出</button>
+                <span id="stop"><button id="beginBtn" class="btn btn-outline-success" onclick="begindata()">开始监测</button></span>
+                <span id="model"><button type="button" class="btn btn-outline-warning" id="down_m">关闭自动</button></span>
+            </p>
+        </div>
+        <div id="content" style="text-align:center;">
+            <div class="table-list datacard">
+                <div calss="overview-card-title-container datacard">
+                    <label calss="overview-card-title"><span class="faa-parent animated-hover"><i class="fa fa-spinner faa-spin animated" aria-hidden="true"></i></span>实时数据(<strong><span id="now-time"></span></strong>)</label>
+                </div>
+                <table cellspacing="0" cellpadding="0" class="list" id="IndexPreviewTableList">
+                    <tbody>
+                        <tr class="title">
+                            <th></th><th>温度(℃)</th><th>湿度(%RH)</th><th>光照(lux)</th><th>气压(hPa)</th><th class="empty-tr0"></th>
+                        </tr>
+                        <tr class="highlight">
+                            <td class="normal">实时</td><td id="now-temperature"></td><td id="now-humidity"></td><td id="now-light"></td><td id="now-pressure"></td><td class="empty-tr0"></td>
+                        </tr>
+                        <tr>
+                            <td class="normal">上次</td><td id="last-temperature"></td><td id="last-humidity"></td><td id="last-light"></td><td id="last-pressure"></td><td class="empty-tr0"></td>
+                        </tr>
+                        <tr>
+                            <td class="normal">变化</td><td id="change-temperature"></td><td id="change-humidity"></td><td id="change-light"></td><td id="change-pressure"></td><td class="empty-tr0"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="flod btw"></div>
+            </div>
+            <div class="overview-gap"></div>
+            <div class="overview-do datacard" style="padding-top: 10px;">
+                <div calss="overview-card-title-container datacard">
+                    <label calss="overview-card-title"><span class="faa-parent animated-hover"><i class="fa fa-spinner faa-spin animated" aria-hidden="true"></i></span>实时设备状态(<strong><span id="now-time2"></span></strong>)</label>
+                </div>
+                <div class="dobutton">
+                    <p> <span id="et"><button type="button" class="btn btn-outline-success" id="downt">风机运转</button></span>
+                        <span id="eh"><button type="button" class="btn btn-outline-success" id="downh">除湿运转</button></span>
+                        <span id="el"><button type="button" class="btn btn-outline-success" id="downl">照明运转</button></span>
+                        <span id="ep"><button type="button" class="btn btn-outline-success" id="downp">气泵运转</button></span>
+                    </p>
+                </div>
+            </div>
+            <div id="chart" class="overview-detail">
+                <div id="row1" class="table-detail table-grid">
+                    <div class="datacard left">
+                        <div class="table-grid-item">
+                            <div class="title clearfix">
+                                <div class="l"><i class="fa fa-thermometer-1" aria-hidden="true"></i>棚内温度(℃)</div>
+                            </div>
+                            <div id="temperature-chart" style="widows: 400px;height: 300px;"></div>
+                        </div>
+                    </div>
+                    <div class="datacard right">
+                        <div class="table-grid-item">
+                            <div class="title clearfix">
+                                <div class="l"><i class="fa fa-tint" aria-hidden="true"></i>棚内湿度(%RH)</div>
+                            </div>
+                            <div id="humidity-chart" style="widows: 400px;height: 300px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="overview-gap"></div>
+                <div id="row2" class="table-detail table-grid">
+                    <div class="datacard left">
+                        <div class="table-grid-item">
+                            <div class="title clearfix">
+                                <div class="l"><i class="fa fa-sun-o" aria-hidden="true"></i>棚内光照(lux)</div>
+                            </div>
+                            <div id="light-chart" style="widows: 400px;height: 300px;"></div>
+                        </div>
+                    </div>
+                    <div class="datacard right">
+                        <div class="table-grid-item">
+                            <div class="title clearfix">
+                                <div class="l"><i class="fa fa-bullseye" aria-hidden="true"></i>棚内气压(hPa)</div>
+                            </div>
+                            <div id="pressure-chart" style="widows: 400px;height: 300px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="overview-gap"></div>
+            </div>
+        </div>
+        <div class="footer">
+            <p>&copy;2020 HEUStudent&nbsp;智慧大棚项目组&nbsp;<a href="https://justlovesmile.top/guestbook" style="color: #000;"><i class="fa fa-commenting" aria-hidden="true"></i>留言板</a></p>
+        </div>
+    </div>
+    <script>
+        check_session=function(){
+            $.get('/check_session/').done(function(ans){
+                data=$.parseJSON(ans);
+                console.log(data)
+                if(data["session"]=="false"){
+                    window.location.replace("/login/");
+                }
+                if(data['ser']=='false'){
+                    $('#stop').html('<button id="beginBtn" class="btn btn-outline-success" onclick="begindata()">开始监测</button>')
+                }
+                else{
+                    $('#stop').html('<button id="stopBtn" class="btn btn-outline-warning" onclick="stopdata()">停止监测</button>')
+                }
+                if(data['model']=='0'){
+                    $('#model').html('<button type="button" class="btn btn-outline-success" id="up_m" onclick="turnupmodel()">打开自动</button>')
+                }
+                else{
+                    $('#model').html('<button type="button" class="btn btn-outline-warning" id="down_m" onclick="turndownmodel()">关闭自动</button>')
+                }
+                if(data['et']=="1"){
+                    $('#et').html('<button type="button" class="btn btn-outline-success" onclick="turndownet()">风机运转</button>')
+                }
+                else{
+                    $('#et').html('<button type="button" class="btn btn-outline-warning" onclick="turnupet()">风机停止</button>')
+                }
+                if(data['eh']=="1"){
+                    $('#eh').html('<button type="button" class="btn btn-outline-success" onclick="turndowneh()">除湿运转</button>')
+                }
+                else{
+                    $('#eh').html('<button type="button" class="btn btn-outline-warning" onclick="turnupeh()">除湿停止</button>')
+                }
+                if(data['el']=="1"){
+                    $('#el').html('<button type="button" class="btn btn-outline-success" onclick="turndownel()">照明运转</button>')
+                }
+                else{
+                    $('#el').html('<button type="button" class="btn btn-outline-warning" onclick="turnupel()">照明停止</button>')
+                }
+                if(data['ep']=="1"){
+                    $('#ep').html('<button type="button" class="btn btn-outline-success" onclick="turndownep()">气泵运转</button>')
+                }
+                else{
+                    $('#ep').html('<button type="button" class="btn btn-outline-warning" onclick="turnupep()">气泵停止</button>')
+                }
+            })
+        }
+        showdata=function(){
+            postdata={'Index':2}
+            $.post('/getdata/',postdata,function(ans){
+                data=$.parseJSON(ans);
+                time=data["time"]
+                temperature=data["temperature"]
+                humidity=data["humidity"]
+                light=data["light"]
+                pressure=data["pressure"]
+                $('#now-time').text(time[0])
+                $('#now-time2').text(time[0])
+                $('#now-temperature').text(temperature[0])
+                $('#now-humidity').text(humidity[0])
+                $('#now-light').text(light[0])
+                $('#now-pressure').text(pressure[0])
+                $('#last-temperature').text(temperature[1])
+                $('#last-humidity').text(humidity[1])
+                $('#last-light').text(light[1])
+                $('#last-pressure').text(pressure[1])
+                $('#change-temperature').text(temperature[0]-temperature[1])
+                $('#change-humidity').text(humidity[0]-humidity[1])
+                $('#change-light').text(light[0]-light[1])
+                $('#change-pressure').text(pressure[0]-pressure[1])
+            })
+        }
+        function drawcharts(){
+            var temperatureChart=echarts.init(document.getElementById("temperature-chart"));
+            var humidityChart=echarts.init(document.getElementById("humidity-chart"));
+            var lightChart=echarts.init(document.getElementById("light-chart"));
+            var pressureChart=echarts.init(document.getElementById("pressure-chart"));
+            postdata={'Hour':1}
+            $.post('/getjson/',postdata,function(data){
+                ans = $.parseJSON(data)
+                console.log(ans)
+                time=ans["time"]
+                temperature=ans["temperature"]
+                humidity=ans["humidity"]
+                light=ans["light"]
+                pressure=ans["pressure"]
+                temperatureChart.setOption({
+                title: {
+                    text: '温度趋势图',
+                    top: 1,
+                    x: 'center'
+                },
+                tooltip: {
+                    show: true,
+                    trigger: 'axis'
+                },
+                toolbox: {
+		            show : true,
+		            orient: 'horizontal',
+		            left: 'center',
+		            top: '270',
+		            showTitle: true,
+		            feature : {
+		                magicType : {show: true, title:{line:'折线图',bar:'柱形图'}, type: ['line', 'bar']},
+		                restore : {show: true,title:'还原',color:'black'},
+		                saveAsImage : {show: true,title:'保存为图片',type:'jpeg',lang:['点击本地保存']}
+		            }
+		        },
+                xAxis: {
+                    data: time
+                },
+                yAxis: {
+                    type: 'value',
+                },
+                series: [{
+                    name: '温度',
+                    type: 'line',
+                    color: ['#6772e5'],
+                    data: temperature
+                }]
+            });
+            humidityChart.setOption({
+                title: {
+                    text: '湿度趋势图',
+                    top: 0,
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                toolbox: {
+		            show : true,
+		            orient: 'horizontal',
+		            left: 'center',
+		            top: '270',
+		            showTitle: true,
+		            feature : {
+		                magicType : {show: true, title:{line:'折线图',bar:'柱形图'}, type: ['line', 'bar']},
+		                restore : {show: true,title:'还原',color:'black'},
+		                saveAsImage : {show: true,title:'保存为图片',type:'jpeg',lang:['点击本地保存']}
+		            }
+		        },
+                xAxis: {
+                    data: time
+                },
+                yAxis: {
+                    type: 'value',
+                },
+                series: [{
+                    name: '湿度',
+                    type: 'line',
+                    color: ['#6772e5'],
+                    data: humidity
+                }]
+            });
+            lightChart.setOption({
+                title: {
+                    text: '光照趋势图',
+                    top: 0,
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                toolbox: {
+		            show : true,
+		            orient: 'horizontal',
+		            left: 'center',
+		            top: '270',
+		            showTitle: true,
+		            feature : {
+		                magicType : {show: true, title:{line:'折线图',bar:'柱形图'}, type: ['line', 'bar']},
+		                restore : {show: true,title:'还原',color:'black'},
+		                saveAsImage : {show: true,title:'保存为图片',type:'jpeg',lang:['点击本地保存']}
+		            }
+		        },
+                xAxis: {
+                    data: time
+                },
+                yAxis: {
+                    type: 'value',
+                },
+                series: [{
+                    name: '光照',
+                    type: 'line',
+                    color: ['#6772e5'],
+                    data: light
+                }]
+            });
+            pressureChart.setOption({
+                title: {
+                    text: '气压趋势图',
+                    top: 0,
+                    x: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                toolbox: {
+		            show : true,
+		            orient: 'horizontal',
+		            left: 'center',
+		            top: '270',
+		            showTitle: true,
+		            feature : {
+		                magicType : {show: true, title:{line:'折线图',bar:'柱形图'}, type: ['line', 'bar']},
+		                restore : {show: true,title:'还原',color:'black'},
+		                saveAsImage : {show: true,title:'保存为图片',type:'jpeg',lang:['点击本地保存']}
+		            }
+		        },
+                xAxis: {
+                    data: time
+                },
+                yAxis: {
+                    type: 'value',
+                },
+                series: [{
+                    name: '气压',
+                    type: 'line',
+                    color: ['#6772e5'],
+                    data: pressure
+                }]
+            });
+            })
+        }
+        logout=function(){
+            if(window.confirm("确认是否退出？")){
+                $.post('/clear_session/',{},function(ans){
+                    if(ans=="true"){
+                        window.location.replace("/login/");
+                    }
+                })
+            }
+        }
+        stopdata=function(){
+            if(window.confirm("确认是否停止监测？")){
+                $.post('/stop_serial/',{},function(ans){
+                    if(ans=="true"){
+                        alert("已停止！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        begindata=function(){
+            if(window.confirm("确认是否开始监测？")){
+                $.post('/begin_serial/',{},function(ans){
+                    if(ans=="true"){
+                        alert("已开启！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turnupmodel=function(){
+            postdata={
+                'text':0
+            }
+            if(window.confirm("确认是否开启自动模式？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已开启！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turndownmodel=function(){
+            postdata={
+                'text':9
+            }
+            if(window.confirm("确认是否关闭自动模式？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已关闭！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turnupet=function(){
+            postdata={
+                'text':1
+            }
+            if(window.confirm("确认是否打开风机？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已打开！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turndownet=function(){
+            postdata={
+                'text':2
+            }
+            if(window.confirm("确认是否关闭风机？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已关闭！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turnupeh=function(){
+            postdata={
+                'text':3
+            }
+            if(window.confirm("确认是否打开除湿？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已打开！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turndowneh=function(){
+            postdata={
+                'text':4
+            }
+            if(window.confirm("确认是否关闭除湿？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已关闭！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turnupel=function(){
+            postdata={
+                'text':5
+            }
+            if(window.confirm("确认是否打开光照？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已打开！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turndownel=function(){
+            postdata={
+                'text':6
+            }
+            if(window.confirm("确认是否关闭光照？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已关闭！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turnupep=function(){
+            postdata={
+                'text':7
+            }
+            if(window.confirm("确认是否打开气泵？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已打开！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        turndownep=function(){
+            postdata={
+                'text':8
+            }
+            if(window.confirm("确认是否关闭气泵？")){
+                $.post('/write_serial/',postdata,function(ans){
+                    if(ans=="true"){
+                        alert("已关闭！")
+                        window.location.replace("/");
+                    }
+                })
+            }
+        }
+        window.onload=function(){
+            check_session()
+            showdata()
+            drawcharts()
+            setInterval("showdata()",5000);
+            setInterval("drawcharts()",5000);
+            setInterval("check_session()",5000);
+        }
+        $('#logoutBtn').click(function(){
+            logout()
+        })
+    </script>
+</body>
+</html>
