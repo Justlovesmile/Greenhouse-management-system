@@ -2,6 +2,8 @@
 
 >HEU嵌入式课程设计==>基于Proteus，Arduino，Flask搭建的智能大棚管理系统
 
+[BOLG🔗](https://justlovesmile.top/2020/06/24/嵌入式智能大棚监测管理系统/)
+
 ## 系统简介
 
 1.主要内容	
